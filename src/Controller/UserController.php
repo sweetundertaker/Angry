@@ -35,4 +35,9 @@ class UserController extends AbstractController
             'controller_name' => 'ExampleController',
         ]);
     }
+    #[Route('/user/get/{id}', name: 'user_get')]
+    public function get(Request $request, int $id): Response
+    {
+        return $this->json([]);
+    }
 }
