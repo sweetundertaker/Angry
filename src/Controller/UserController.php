@@ -35,9 +35,38 @@ class UserController extends AbstractController
             'controller_name' => 'ExampleController',
         ]);
     }
+
     #[Route('/user/get/{id}', name: 'user_get')]
     public function get(Request $request, int $id): Response
     {
-        return $this->json([]);
+        $repository = $this->entityManager->getRepository(User::class);
+        $user = $repository->findOneBy([
+            'id' => $id
+        ]);
+
+        if (!$user) {
+            return $this->json(["error" => "user is not defined"]);
+        }
+
+        return $this->json([
+            "name" => $user->getId()
+        ]);
+    }
+
+    #[Route('/user/delete/{id}', name: 'user_delete')]
+    public function delete(Request $request, int $id): Response
+    {
+        $repository = $this->entityManager->getRepository(User::class);
+        $user = $repository->findOneBy([
+            'id' => $id
+        ]);
+        if (!$user) {
+            return $this->json(["error" => "user is not defined"]);
+        }
+        $this->entityManager->remove($user);
+        $this->entityManager->flush();
+        return $this->json([
+
+        ]);
     }
 }
